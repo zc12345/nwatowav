@@ -14,6 +14,7 @@ import (
 )
 
 var inputfile = flag.String("inputfile", "", "path to the input file.")
+var outputfile = flag.String("outputfile", "", "path to the output file.")
 
 type fileType int
 
@@ -42,6 +43,12 @@ func main() {
 	var outfilename, outext, outpath string
 	var filetype fileType
 	var headblksz int64
+	
+	if *outputfile == "" {
+		outfilename = strings.Split(*inputfile, ".")[0]
+	}else{
+		outfilename = *outputfile
+	}
 
 	switch {
 	case strings.Contains(*inputfile, ".nwa"):
@@ -65,8 +72,6 @@ func main() {
 	if filetype == NONE {
 		log.Fatal("This program can only handle .nwa/.nwk/.ovk files right now.")
 	}
-
-	outfilename = strings.Split(*inputfile, ".")[0]
 
 	if filetype == NWA {
 		var data io.Reader
